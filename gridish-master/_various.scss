@@ -1,0 +1,132 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+a,
+u {
+  text-decoration: none;
+}
+
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+a:focus {
+  outline: 0;
+}
+
+// ----------------------------------------------------------------
+
+$clr-bg: #222;
+$clr-primary: rgba(white, 0.9);
+$clr-grey: grey;
+$clr-greenish: #424949;
+$clr-greyish: #424242;
+$clr-brownish: #5d4037;
+$clr-blueish: #37474f;
+$clr-info: #444;
+
+$font-xl: 2.5rem;
+$font-l: 2.1rem;
+$font-m: 1.9rem;
+$font-s: 1.5rem;
+$font-xs: 1.2rem;
+
+$transition: 360ms;
+$transition-slow: 600ms;
+
+// ----------------------------------------------------------------
+
+::selection {
+  background: $clr-bg;
+  color: $clr-primary;
+}
+
+// ----------------------------------------------------------------
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// ----------------------------------------------------------------
+
+@mixin absoluteHover() {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 100%;
+}
+
+@mixin absolute() {
+  position: absolute;
+  content: "";
+}
+
+// ----------------------------------------------------------------
+
+/// Stroke font-character
+/// @param  {Integer} $stroke - Stroke width
+/// @param  {Color}   $color  - Stroke color
+/// @return {List}            - text-shadow list
+@function stroke($stroke, $color) {
+  $shadow: ();
+  $from: $stroke * -1;
+  @for $i from $from through $stroke {
+    @for $j from $from through $stroke {
+      $shadow: append($shadow, $i * 0.2rem $j * 0.2rem 0 $color, comma);
+    }
+  }
+  @return $shadow;
+}
+/// Stroke font-character
+/// @param  {Integer} $stroke - Stroke width
+/// @param  {Color}   $color  - Stroke color
+/// @return {Style}           - text-shadow
+@mixin stroke($stroke, $color) {
+  text-shadow: stroke($stroke, $color);
+}

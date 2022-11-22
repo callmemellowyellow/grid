@@ -1,0 +1,259 @@
+@use "./various" as *;
+
+// --------------------------------------------------------
+
+[class*="grid-"] {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-main {
+  max-width: 1200px;
+  animation: fadeIn 1s forwards;
+}
+
+// --------------------------------------------------------
+
+.grid-stack > * {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.grid-stack > img {
+  aspect-ratio: 15/8;
+  object-fit: cover;
+  object-position: top;
+  width: 100%;
+  z-index: -1;
+}
+
+.stack-text {
+  // ------> overlay text-only <------
+  // height: max-content;
+  // width: fit-content;
+
+  position: relative;
+  z-index: 1;
+
+  h1 {
+    color: $clr-blueish;
+    @include stroke(1, rgba($clr-primary, 0.2));
+    transition: color $transition-slow ease, opacity $transition-slow ease, text-shadow $transition-slow ease;
+  }
+
+  // ------> overlay <------
+  &::after {
+    @include absoluteHover();
+    background: rgba($clr-blueish, 0.66);
+    opacity: 0;
+    z-index: -1;
+    transition: height $transition-slow ease, opacity $transition-slow ease;
+  }
+
+  &:hover {
+    h1 {
+      color: $clr-primary;
+      @include stroke(1, rgba($clr-blueish, 0.2));
+    }
+
+    &::after {
+      opacity: 1;
+      height: 100%;
+    }
+  }
+}
+
+// // --------------------------------------------------------
+
+.grid-columns {
+  grid-template-columns: 1fr;
+
+  @media (min-width: 410px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  article {
+    background-color: $clr-greyish;
+  }
+}
+
+// --------------------------------------------------------
+
+.grid-even-columns {
+  grid-template-columns: repeat(auto-fit, minmax(min(275px, 100%), 1fr));
+
+  @media (min-width: 850px) {
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  }
+
+  article {
+    background-color: $clr-brownish;
+  }
+}
+
+// --------------------------------------------------------
+
+.grid-auto-flow {
+  @media (min-width: 800px) {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+
+  article {
+    background-color: $clr-blueish;
+  }
+}
+
+// --------------------------------------------------------
+
+.grid-full-width {
+  background-color: $clr-greenish;
+  padding: 6rem 3rem;
+
+  box-shadow: 0 0 0 100vmax $clr-greenish;
+  clip-path: inset(0 -100vmax);
+}
+
+// --------------------------------------------------------
+
+.grid-span {
+  grid-template-columns: 1fr;
+
+  @media (min-width: 550px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  article {
+    background-color: $clr-greyish;
+
+    @media (min-width: 640px) {
+      &:nth-child(1) {
+        grid-column: span 2;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------------
+
+.grid-areas {
+  grid-template-areas:
+    "box-1"
+    "box-2"
+    "box-3"
+    "box-4"
+    "box-5"
+    "box-6"
+    "box-7";
+  grid-auto-columns: 1fr;
+
+  @media (min-width: 440px) {
+    grid-template-areas:
+      "box-1 box-3"
+      "box-2 box-3"
+      "box-4 box-4"
+      "box-6 box-5"
+      "box-6 box-5"
+      "box-7 box-7";
+  }
+
+  @media (min-width: 550px) {
+    grid-template-areas:
+      "box-1 box-2 box-3"
+      "box-4 box-4 box-3"
+      "box-5 box-5 box-5"
+      "box-6 box-6 box-7";
+  }
+
+  @media (min-width: 640px) {
+    grid-template-areas:
+      "box-1 box-1 box-1 box-2 box-2 box-3 box-3"
+      "box-4 box-4 box-5 box-5 box-5 box-3 box-3"
+      "box-6 box-6 box-6 box-6 box-7 box-7 box-7";
+  }
+
+  @media (min-width: 900px) {
+    grid-template-areas:
+      "box-1 box-1 box-2 box-3"
+      "box-4 box-5 box-5 box-3"
+      "box-6 box-6 box-7 box-7";
+  }
+
+  article {
+    background-color: $clr-brownish;
+
+    // ------> for numbered names as shown below you can use this  <------
+    $item-count: 7;
+
+    @for $i from 1 through $item-count {
+      &:nth-child(#{$i}) {
+        grid-area: #{box- + 1 * $i};
+      }
+    }
+
+    // --------------------------------------------------------
+
+    // &:nth-child(1) {
+    //   grid-area: box-1;
+    // }
+    // &:nth-child(2) {
+    //   grid-area: box-2;
+    // }
+    // &:nth-child(3) {
+    //   grid-area: box-3;
+    // }
+    // &:nth-child(4) {
+    //   grid-area: box-4;
+    // }
+    // &:nth-child(5) {
+    //   grid-area: box-5;
+    // }
+
+    // --------------------------------------------------------
+  }
+}
+
+// --------------------------------------------------------
+
+.grid-info {
+  font-family: "Courier New", Courier, monospace;
+  color: $clr-grey;
+  box-shadow: inset 0 0 0 1px $clr-info;
+  padding: 2rem 3rem;
+  font-size: $font-s;
+}
+
+// --------------------------------------------------------
+
+.grid-deco {
+  grid-template-columns: 1fr;
+  background-color: $clr-blueish;
+  padding: 0 3rem;
+  height: 1rem;
+  box-shadow: 0 0 0 1vmax $clr-blueish;
+  clip-path: inset(0 -1vmax);
+}
+
+// --------------------------------------------------------
+
+.grid-appreciate {
+  grid-template-columns: 1fr;
+  background-color: $clr-blueish;
+  padding: 9rem 3rem;
+  box-shadow: 0 0 0 2vmax $clr-blueish;
+  clip-path: inset(0 -2vmax);
+
+  p.flex-text {
+    text-align: center;
+    margin: 0;
+    font-size: $font-m;
+  }
+}
